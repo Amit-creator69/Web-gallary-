@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Zoom Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background: #000;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+      font-size: 2.5rem;
+    }
+
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr); /* Mobile first */
+      gap: 30px;
+      padding: 20px;
+      z-index: 1;
+    }
+
+    .card {
+      background: #111;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
+      transition: box-shadow 0.4s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      box-shadow:
+        0 0 10px #0ff,
+        0 0 20px #0ff,
+        0 0 30px #0ff,
+        0 0 40px #0ff;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      cursor: pointer;
+      padding: 40px;
+      box-sizing: border-box;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 15px;
+      box-shadow: 0 0 40px cyan;
+      animation: zoomIn 0.3s ease;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1.05); opacity: 1; }
+    }
+
+    /* Responsive Grid Layout */
+    @media (min-width: 600px) {
+      #gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      #gallery {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1200px) {
+      #gallery {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Web Gallery</h1>
+
+<div id="gallery"></div>
+<div id="overlay"></div>
+
+<script>
+  const gallery = document.getElementById("gallery");
+  const overlay = document.getElementById("overlay");
+
+  const imageUrls = [
+    "images/image1.png",
+    "images/image2.png",
+    "images/image3.png",
+    "images/image4.png",
+    "images/image5.png",
+    "images/image6.png",
+    "images/image7.png",
+    "images/image8.png",
+    "images/image9.png",
+    "images/image10.png",
+    "images/image11.png",
+    "images/image12.png"
+  ];
+
+  imageUrls.forEach((url, index) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = `Image ${index + 1}`;
+
+    img.addEventListener('click', () => {
+      overlay.innerHTML = '';
+      const zoomedImg = document.createElement("img");
+      zoomedImg.src = img.src;
+      overlay.appendChild(zoomedImg);
+      overlay.style.display = "flex";
+    });
+
+    card.appendChild(img);
+    gallery.appendChild(card);
+  });
+
+  overlay.addEventListener("click", () => {
+    overlay.style.display = "none";
+    overlay.innerHTML = "";
+  });
+</script>
+
+</body>
+</html>
